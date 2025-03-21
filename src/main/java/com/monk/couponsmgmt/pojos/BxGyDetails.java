@@ -15,7 +15,7 @@ public class BxGyDetails extends Details {
     private List<BuyProduct> buyProducts;
     @JsonProperty("get_products")
     private List<GetProduct> getProducts;
-    @JsonProperty("repition_limit")
+    @JsonProperty("repetition_limit")
     private Integer repetitionLimit;
 
     @JsonIgnore
