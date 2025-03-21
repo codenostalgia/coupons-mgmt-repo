@@ -8,8 +8,7 @@ import com.monk.couponsmgmt.dto.CartOutputDTO;
 import com.monk.couponsmgmt.dto.CouponDTO;
 import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.InvalidCouponTypeException;
 import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.NoCouponsFoundException;
-import com.monk.couponsmgmt.pojos.Cart;
-import com.monk.couponsmgmt.pojos.Item;
+import com.monk.couponsmgmt.pojos.*;
 import com.monk.couponsmgmt.services.inf.CouponService;
 import org.springframework.stereotype.Service;
 
@@ -75,7 +74,7 @@ public class CouponServiceImpl implements CouponService {
         CouponDTO coupon = couponsDAO.getCoupon(id, connection);
 
         String type = coupon.getType();
-        CouponDTO.Details details = coupon.getDetails();
+        Details details = coupon.getDetails();
         switch (type) {
             case TYPE_CARTWISE:
                 return applyCartWiseCoupon(details, cartInputDTO);
@@ -88,11 +87,11 @@ public class CouponServiceImpl implements CouponService {
         }
     }
 
-    private CartOutputDTO applyBxGyCoupon(CouponDTO.Details rawDetails, CartInputDTO cartInputDTO) {
+    private CartOutputDTO applyBxGyCoupon(Details rawDetails, CartInputDTO cartInputDTO) {
         CartOutputDTO updatedCart = getUpdatedCart(cartInputDTO);
         Integer totalPrice = updatedCart.getTotalPrice();
 
-        CouponDTO.BxGyDetails details = (CouponDTO.BxGyDetails) rawDetails;
+        BxGyDetails details = (BxGyDetails) rawDetails;
 
         Map<Integer, Integer> buyProds = details.getBuyProd2Quant();
         Map<Integer, Integer> getProds = details.getGetProd2Quant();
@@ -143,12 +142,12 @@ public class CouponServiceImpl implements CouponService {
 
     }
 
-    private CartOutputDTO applyProdctWiseCoupon(CouponDTO.Details rawDetails, CartInputDTO cartInputDTO) {
+    private CartOutputDTO applyProdctWiseCoupon(Details rawDetails, CartInputDTO cartInputDTO) {
 
         CartOutputDTO updatedCart = getUpdatedCart(cartInputDTO);
         Integer totalPrice = updatedCart.getTotalPrice();
 
-        CouponDTO.ProductWiseDetails details = (CouponDTO.ProductWiseDetails) rawDetails;
+        ProductWiseDetails details = (ProductWiseDetails) rawDetails;
 
         Integer totalDiscount = 0;
         for (Item item : updatedCart.getCart().getItems()) {
@@ -165,12 +164,12 @@ public class CouponServiceImpl implements CouponService {
         return updatedCart;
     }
 
-    private CartOutputDTO applyCartWiseCoupon(CouponDTO.Details rawDetails, CartInputDTO cartInputDTO) {
+    private CartOutputDTO applyCartWiseCoupon(Details rawDetails, CartInputDTO cartInputDTO) {
 
         CartOutputDTO updatedCart = getUpdatedCart(cartInputDTO);
         Integer totalPrice = updatedCart.getTotalPrice();
 
-        CouponDTO.CartWiseDetails details = (CouponDTO.CartWiseDetails) rawDetails;
+        CartWiseDetails details = (CartWiseDetails) rawDetails;
 
         Integer totalDiscount = 0;
         if (totalPrice > details.getThreshold()) {

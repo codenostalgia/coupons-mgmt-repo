@@ -6,6 +6,10 @@ import com.monk.couponsmgmt.dto.CouponDTO;
 import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.CouponNotFoundException;
 import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.CouponStructureInvalidException;
 import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.NoCouponsFoundException;
+import com.monk.couponsmgmt.pojos.BxGyDetails;
+import com.monk.couponsmgmt.pojos.CartWiseDetails;
+import com.monk.couponsmgmt.pojos.Details;
+import com.monk.couponsmgmt.pojos.ProductWiseDetails;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -78,16 +82,16 @@ public class CouponsDAO {
                 int id = rs.getInt("id");
                 String type = rs.getString("type");
 
-                CouponDTO.Details details;
+                Details details;
                 switch (type) {
                     case TYPE_BXGY:
-                        details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), CouponDTO.BxGyDetails.class);
+                        details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), BxGyDetails.class);
                         break;
                     case TYPE_CARTWISE:
-                        details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), CouponDTO.CartWiseDetails.class);
+                        details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), CartWiseDetails.class);
                         break;
                     case TYPE_PRODUCTWISE:
-                        details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), CouponDTO.ProductWiseDetails.class);
+                        details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), ProductWiseDetails.class);
                         break;
                     default:
                         throw new IllegalArgumentException("Unknown type: " + type);
@@ -128,16 +132,16 @@ public class CouponsDAO {
             int couponId = rs.getInt("id");
             String type = rs.getString("type");
 
-            CouponDTO.Details details;
+            Details details;
             switch (type) {
                 case TYPE_BXGY:
-                    details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), CouponDTO.BxGyDetails.class);
+                    details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), BxGyDetails.class);
                     break;
                 case TYPE_CARTWISE:
-                    details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), CouponDTO.CartWiseDetails.class);
+                    details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), CartWiseDetails.class);
                     break;
                 case TYPE_PRODUCTWISE:
-                    details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), CouponDTO.ProductWiseDetails.class);
+                    details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), ProductWiseDetails.class);
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown type: " + type);

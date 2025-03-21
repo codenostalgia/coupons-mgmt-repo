@@ -1,8 +1,7 @@
 package com.monk.couponsmgmt.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.monk.couponsmgmt.pojos.Cart;
-import com.monk.couponsmgmt.pojos.CouponSimplified;
+import com.monk.couponsmgmt.pojos.*;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class ApplicableCouponsDTO {
                 List<CouponDTO> candidateCoupons = entry.getValue();
                 if (type.equalsIgnoreCase(TYPE_CARTWISE)) {
                     for (CouponDTO coupon : candidateCoupons) {
-                        CouponDTO.CartWiseDetails details = (CouponDTO.CartWiseDetails) coupon.getDetails();
+                        CartWiseDetails details = (CartWiseDetails) coupon.getDetails();
                         if (cart.totalCartValue() > details.getThreshold()) {
                             int discount = (int) ((cart.totalCartValue() * details.getDiscount()) / 100.);
                             if (discount > 0) {
@@ -47,7 +46,7 @@ public class ApplicableCouponsDTO {
                 }
                 if (type.equalsIgnoreCase(TYPE_PRODUCTWISE)) {
                     for (CouponDTO coupon : candidateCoupons) {
-                        CouponDTO.ProductWiseDetails details = (CouponDTO.ProductWiseDetails) coupon.getDetails();
+                        ProductWiseDetails details = (ProductWiseDetails) coupon.getDetails();
                         if (prod2Price.containsKey(details.getProductId())) {
                             int discount = (int) ((prod2Price.get(details.getProductId()) * details.getDiscount()) / 100.);
                             if (discount > 0) {
@@ -60,7 +59,7 @@ public class ApplicableCouponsDTO {
                 if (type.equalsIgnoreCase(TYPE_BXGY)) {
                     // ASSUMPTION : In one Coupon, Same product cant be present in both buy and get category
                     for (CouponDTO coupon : candidateCoupons) {
-                        CouponDTO.BxGyDetails details = (CouponDTO.BxGyDetails) coupon.getDetails();
+                        BxGyDetails details = (BxGyDetails) coupon.getDetails();
                         Map<Integer, Integer> buyProds = details.getBuyProd2Quant();
                         Map<Integer, Integer> getProds = details.getGetProd2Quant();
                         System.out.println("buyMap: " + buyProds);
