@@ -1,9 +1,11 @@
 package com.monk.couponsmgmt.db;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monk.couponsmgmt.dto.CouponDTO;
+import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.CouponNotFoundException;
+import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.CouponStructureInvalidException;
+import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.NoCouponsFoundException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,30 +40,32 @@ public class CouponsDAO {
         }
     }
 
-    public int insertCoupon(CouponDTO coupon, Connection connection) throws SQLException {
+    public CouponDTO insertCoupon(CouponDTO coupon, Connection connection) {
+        Integer id;
         try (PreparedStatement ps = connection.prepareStatement(QUERY_INSERT_COUPON, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, coupon.getType());
             ps.setString(2, objectMapper.writeValueAsString(coupon.getDetails()));
             int affectedRows = ps.executeUpdate();
 
             if (affectedRows == 0) {
-                System.out.println("Inserting coupon failed, no rows affected.");
-                return -1;
+                throw new CouponStructureInvalidException("Coupon Structure is Invalid !");
             }
 
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    return generatedKeys.getInt(1);
+                    id = generatedKeys.getInt(1);
                 } else {
-                    System.out.println("Inserting coupon failed, no ID obtained.");
-                    return -1;
+                    throw new CouponStructureInvalidException("Coupon Structure is Invalid !");
                 }
             }
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (JsonProcessingException e) {
+            throw new CouponStructureInvalidException("Coupon Structure is Invalid !");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
-        return -1;
+        coupon.setId(id);
+        return coupon;
     }
 
     public List<CouponDTO> getAllCoupons(Connection connection) {
@@ -96,15 +100,13 @@ public class CouponsDAO {
 
                 coupons.add(coupon);
             }
+            if (coupons.size() == 0) {
+                throw new NoCouponsFoundException("No Coupons in Database!");
+            }
             return coupons;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (JsonMappingException e) {
-            System.out.println(e.getMessage());
-        } catch (JsonProcessingException e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException | JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     public CouponDTO getCoupon(Integer id, Connection connection) {
@@ -112,16 +114,15 @@ public class CouponsDAO {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             return getCouponFromResultSet(rs);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException | JsonProcessingException e) {
+            throw new RuntimeException();
         }
-        return null;
     }
 
-    private CouponDTO getCouponFromResultSet(ResultSet rs) throws Exception {
-        if (getResultSetSize(rs) == 0) return null;
+    private CouponDTO getCouponFromResultSet(ResultSet rs) throws SQLException, JsonProcessingException {
+        if (getResultSetSize(rs) == 0) {
+            throw new CouponNotFoundException();
+        }
 
         while (rs.next()) {
             int couponId = rs.getInt("id");
@@ -152,7 +153,7 @@ public class CouponsDAO {
         return null;
     }
 
-    public static int getResultSetSize(ResultSet rs) throws Exception {
+    public static int getResultSetSize(ResultSet rs) throws SQLException {
         rs.last();
         int size = rs.getRow();
         rs.beforeFirst();
@@ -161,9 +162,10 @@ public class CouponsDAO {
 
     public boolean deleteCoupon(Integer id, Connection connection) {
         try (PreparedStatement ps = connection.prepareStatement(QUERY_DELETE_COUPON)) {
+            getCoupon(id, connection);
             ps.setInt(1, id);
-            int affectedRows = ps.executeUpdate();
-            return affectedRows > 0;
+            ps.executeUpdate();
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -171,22 +173,14 @@ public class CouponsDAO {
 
     public CouponDTO updateCoupon(Integer id, CouponDTO coupon, Connection connection) {
         try (PreparedStatement ps = connection.prepareStatement(QUERY_UPDATE_COUPON, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            getCoupon(id, connection);
             ps.setString(1, coupon.getType());
             ps.setString(2, objectMapper.writeValueAsString(coupon.getDetails()));
             ps.setInt(3, id);
-
-            int affectedRows = ps.executeUpdate();
-
-            if (affectedRows > 0) {
-                return getCoupon(id, connection);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (JsonProcessingException e) {
-            System.out.println(e.getMessage());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            ps.executeUpdate();
+            return getCoupon(id, connection);
+        } catch (SQLException | JsonProcessingException e) {
+            throw new RuntimeException();
         }
-        return null;
     }
 }

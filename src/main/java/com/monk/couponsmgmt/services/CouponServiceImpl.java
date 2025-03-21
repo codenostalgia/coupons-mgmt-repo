@@ -6,6 +6,8 @@ import com.monk.couponsmgmt.dto.ApplicableCouponsDTO;
 import com.monk.couponsmgmt.dto.CartInputDTO;
 import com.monk.couponsmgmt.dto.CartOutputDTO;
 import com.monk.couponsmgmt.dto.CouponDTO;
+import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.InvalidCouponTypeException;
+import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.NoCouponsFoundException;
 import com.monk.couponsmgmt.pojos.Cart;
 import com.monk.couponsmgmt.pojos.Item;
 import com.monk.couponsmgmt.services.inf.CouponService;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,94 +35,57 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public CouponDTO createCoupon(CouponDTO coupon) {
-        try {
-            Integer id = couponsDAO.insertCoupon(coupon, connection);
-            if (id == -1) return null;
-            coupon.setId(id);
-            return coupon;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return couponsDAO.insertCoupon(coupon, connection);
     }
 
     @Override
     public CouponDTO getCoupon(Integer id) {
-        try {
-            CouponDTO coupon = couponsDAO.getCoupon(id, connection);
-            return coupon;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return couponsDAO.getCoupon(id, connection);
     }
 
     @Override
     public List<CouponDTO> getAllCoupons() {
-        try {
-            List<CouponDTO> coupons = couponsDAO.getAllCoupons(connection);
-            return coupons;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return couponsDAO.getAllCoupons(connection);
     }
 
     @Override
     public boolean deleteCoupon(Integer id) {
-        try {
-            return couponsDAO.deleteCoupon(id, connection);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return false;
+        return couponsDAO.deleteCoupon(id, connection);
     }
 
     @Override
     public CouponDTO updateCoupon(Integer id, CouponDTO coupon) {
-        try {
-            return couponsDAO.updateCoupon(id, coupon, connection);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return couponsDAO.updateCoupon(id, coupon, connection);
     }
 
     @Override
     public ApplicableCouponsDTO findApplicableCoupons(CartInputDTO cartInputDTO) {
+        List<CouponDTO> coupons = new ArrayList<>();
         try {
-            List<CouponDTO> coupons = couponsDAO.getAllCoupons(connection);
-            ApplicableCouponsDTO applicableCoupons = new ApplicableCouponsDTO(cartInputDTO, coupons);
-            return applicableCoupons;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            coupons = couponsDAO.getAllCoupons(connection);
+        } catch (NoCouponsFoundException e) {
         }
-        return null;
+        ApplicableCouponsDTO applicableCoupons = new ApplicableCouponsDTO(cartInputDTO, coupons);
+        return applicableCoupons;
     }
 
     @Override
     public CartOutputDTO applyCoupon(CartInputDTO cartInputDTO, Integer id) {
-        try {
-            CouponDTO coupon = couponsDAO.getCoupon(id, connection);
-            if (coupon == null) {
-                return null;
-            }
-            String type = coupon.getType();
-            CouponDTO.Details details = coupon.getDetails();
-            switch (type) {
-                case TYPE_CARTWISE:
-                    return applyCartWiseCoupon(details, cartInputDTO);
-                case TYPE_PRODUCTWISE:
-                    return applyProdctWiseCoupon(details, cartInputDTO);
-                case TYPE_BXGY:
-                    return applyBxGyCoupon(details, cartInputDTO);
-                default:
-                    return null;
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+
+        CouponDTO coupon = couponsDAO.getCoupon(id, connection);
+
+        String type = coupon.getType();
+        CouponDTO.Details details = coupon.getDetails();
+        switch (type) {
+            case TYPE_CARTWISE:
+                return applyCartWiseCoupon(details, cartInputDTO);
+            case TYPE_PRODUCTWISE:
+                return applyProdctWiseCoupon(details, cartInputDTO);
+            case TYPE_BXGY:
+                return applyBxGyCoupon(details, cartInputDTO);
+            default:
+                throw new InvalidCouponTypeException("Invalid Coupon Type!");
         }
-        return null;
     }
 
     private CartOutputDTO applyBxGyCoupon(CouponDTO.Details rawDetails, CartInputDTO cartInputDTO) {
