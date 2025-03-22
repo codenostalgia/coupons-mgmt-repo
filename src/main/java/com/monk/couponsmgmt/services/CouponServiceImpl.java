@@ -6,6 +6,7 @@ import com.monk.couponsmgmt.dto.ApplicableCouponsDTO;
 import com.monk.couponsmgmt.dto.CartInputDTO;
 import com.monk.couponsmgmt.dto.CartOutputDTO;
 import com.monk.couponsmgmt.dto.CouponDTO;
+import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.CouponExpiredException;
 import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.InvalidCouponTypeException;
 import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.NoCouponsFoundException;
 import com.monk.couponsmgmt.pojos.*;
@@ -64,6 +65,8 @@ public class CouponServiceImpl implements CouponService {
             coupons = couponsDAO.getAllCoupons(connection);
         } catch (NoCouponsFoundException e) {
         }
+        // Filtering Out Expired Coupons
+        coupons = coupons.stream().filter(coupon -> !coupon.getIsExpired()).toList();
         ApplicableCouponsDTO applicableCoupons = new ApplicableCouponsDTO(cartInputDTO, coupons);
         return applicableCoupons;
     }
@@ -72,6 +75,10 @@ public class CouponServiceImpl implements CouponService {
     public CartOutputDTO applyCoupon(CartInputDTO cartInputDTO, Integer id) {
 
         CouponDTO coupon = couponsDAO.getCoupon(id, connection);
+
+        if (coupon.getIsExpired()) {
+            throw new CouponExpiredException();
+        }
 
         String type = coupon.getType();
         Details details = coupon.getDetails();

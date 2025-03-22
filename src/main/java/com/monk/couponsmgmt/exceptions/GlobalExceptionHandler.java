@@ -29,6 +29,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(CouponExpiredException.class)
+    public ResponseEntity<Object> handleCouponExpiredException(CouponExpiredException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("NOT_ACCEPTABLE", "Coupon is Expired, Cant be Applied !!");
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+
     @ExceptionHandler(CouponStructureInvalidException.class)
     public ResponseEntity<Object> handleInvalidCouponException(CouponStructureInvalidException ex) {
         ErrorResponse errorResponse = new ErrorResponse("NOT_ACCEPTABLE", ex.getMessage());
@@ -87,6 +94,12 @@ public class GlobalExceptionHandler {
     public static class InvalidCouponTypeException extends RuntimeException {
         public InvalidCouponTypeException(String message) {
             super(message);
+        }
+    }
+
+    public static class CouponExpiredException extends RuntimeException {
+        public CouponExpiredException() {
+            super();
         }
     }
 

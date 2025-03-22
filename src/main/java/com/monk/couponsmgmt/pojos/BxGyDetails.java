@@ -30,7 +30,7 @@ public class BxGyDetails extends Details {
     @JsonCreator
     public BxGyDetails(@JsonProperty("buy_products") List<BuyProduct> buyProducts,
                        @JsonProperty("get_products") List<GetProduct> getProducts,
-                       @JsonProperty("repition_limit") Integer repetitionLimit) {
+                       @JsonProperty("repetition_limit") Integer repetitionLimit) {
         System.out.println("parameterized constructor called...");
         this.buyProducts = buyProducts;
         this.getProducts = getProducts;

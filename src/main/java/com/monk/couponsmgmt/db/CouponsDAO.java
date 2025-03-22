@@ -12,6 +12,7 @@ import com.monk.couponsmgmt.pojos.Details;
 import com.monk.couponsmgmt.pojos.ProductWiseDetails;
 
 import java.sql.*;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +22,12 @@ public class CouponsDAO {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final String QUERY_CREATE_COUPON_TABLE = "CREATE TABLE IF NOT EXISTS coupon (id INT AUTO_INCREMENT PRIMARY KEY, type VARCHAR(30) NOT NULL, details JSON  );";
-    private final String QUERY_INSERT_COUPON = "INSERT INTO coupon(type, details) values (?, ?);";
+    private final String QUERY_CREATE_COUPON_TABLE = "CREATE TABLE IF NOT EXISTS coupon (id INT AUTO_INCREMENT PRIMARY KEY, type VARCHAR(30) NOT NULL, created_ts BIGINT, expiry_ts BIGINT, details JSON  );";
+    private final String QUERY_INSERT_COUPON = "INSERT INTO coupon(type, created_ts, expiry_ts,  details) values (?, ?, ?, ? );";
     private final String QUERY_SELECT_ALL_COUPON = "SELECT * FROM coupon;";
     private final String QUERY_SELECT_COUPON = "SELECT * FROM coupon where id=?;";
     private final String QUERY_DELETE_COUPON = "DELETE FROM coupon WHERE id = ?;";
-    private final String QUERY_UPDATE_COUPON = "UPDATE coupon SET type = ?, details = ? WHERE id = ?;";
+    private final String QUERY_UPDATE_COUPON = "UPDATE coupon SET type = ?, created_ts = ?, expiry_ts =?, details = ? WHERE id = ?;";
 
     public void init(Connection connection) {
         try {
@@ -48,7 +49,9 @@ public class CouponsDAO {
         Integer id;
         try (PreparedStatement ps = connection.prepareStatement(QUERY_INSERT_COUPON, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, coupon.getType());
-            ps.setString(2, objectMapper.writeValueAsString(coupon.getDetails()));
+            ps.setLong(2, coupon.getCreatedTS());
+            ps.setLong(3, coupon.getExpiryTS());
+            ps.setString(4, objectMapper.writeValueAsString(coupon.getDetails()));
             int affectedRows = ps.executeUpdate();
 
             if (affectedRows == 0) {
@@ -75,31 +78,36 @@ public class CouponsDAO {
     public List<CouponDTO> getAllCoupons(Connection connection) {
         try (Statement stmt = connection.createStatement()) {
             ResultSet rs = stmt.executeQuery(QUERY_SELECT_ALL_COUPON);
-
             List<CouponDTO> coupons = new ArrayList<>();
-
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String type = rs.getString("type");
+                int couponId = rs.getInt(FIELD_ID);
+                String type = rs.getString(FIELD_TYPE);
+                long createdTS = rs.getLong(FIELD_CREATED_TIMESTAMP);
+                long expiryTS = rs.getLong(FIELD_EXPIRY_TIMESTAMP);
 
                 Details details;
                 switch (type) {
                     case TYPE_BXGY:
-                        details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), BxGyDetails.class);
+                        details = objectMapper.readValue(objectMapper.readTree(rs.getString(FIELD_DETAILS)).asText(), BxGyDetails.class);
                         break;
                     case TYPE_CARTWISE:
-                        details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), CartWiseDetails.class);
+                        details = objectMapper.readValue(objectMapper.readTree(rs.getString(FIELD_DETAILS)).asText(), CartWiseDetails.class);
                         break;
                     case TYPE_PRODUCTWISE:
-                        details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), ProductWiseDetails.class);
+                        details = objectMapper.readValue(objectMapper.readTree(rs.getString(FIELD_DETAILS)).asText(), ProductWiseDetails.class);
                         break;
                     default:
                         throw new IllegalArgumentException("Unknown type: " + type);
                 }
 
+                long millis = expiryTS - createdTS;
+                Integer days = (int) Duration.ofMillis(millis).toDays();
+
                 CouponDTO coupon = new CouponDTO();
-                coupon.setId(id);
+                coupon.setId(couponId);
                 coupon.setType(type);
+                coupon.setCreatedTS(createdTS);
+                coupon.setExpiresInDays(days);
                 coupon.setDetails(details);
 
                 coupons.add(coupon);
@@ -129,27 +137,34 @@ public class CouponsDAO {
         }
 
         while (rs.next()) {
-            int couponId = rs.getInt("id");
-            String type = rs.getString("type");
+            int couponId = rs.getInt(FIELD_ID);
+            String type = rs.getString(FIELD_TYPE);
+            long createdTS = rs.getLong(FIELD_CREATED_TIMESTAMP);
+            long expiryTS = rs.getLong(FIELD_EXPIRY_TIMESTAMP);
 
             Details details;
             switch (type) {
                 case TYPE_BXGY:
-                    details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), BxGyDetails.class);
+                    details = objectMapper.readValue(objectMapper.readTree(rs.getString(FIELD_DETAILS)).asText(), BxGyDetails.class);
                     break;
                 case TYPE_CARTWISE:
-                    details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), CartWiseDetails.class);
+                    details = objectMapper.readValue(objectMapper.readTree(rs.getString(FIELD_DETAILS)).asText(), CartWiseDetails.class);
                     break;
                 case TYPE_PRODUCTWISE:
-                    details = objectMapper.readValue(objectMapper.readTree(rs.getString("details")).asText(), ProductWiseDetails.class);
+                    details = objectMapper.readValue(objectMapper.readTree(rs.getString(FIELD_DETAILS)).asText(), ProductWiseDetails.class);
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown type: " + type);
             }
 
+            long millis = expiryTS - createdTS;
+            Integer days = (int) Duration.ofMillis(millis).toDays();
+
             CouponDTO coupon = new CouponDTO();
             coupon.setId(couponId);
             coupon.setType(type);
+            coupon.setCreatedTS(createdTS);
+            coupon.setExpiresInDays(days);
             coupon.setDetails(details);
 
             return coupon;
@@ -175,12 +190,14 @@ public class CouponsDAO {
         }
     }
 
-    public CouponDTO updateCoupon(Integer id, CouponDTO coupon, Connection connection) {
+    public CouponDTO updateCoupon(Integer id, CouponDTO updatedCoupon, Connection connection) {
         try (PreparedStatement ps = connection.prepareStatement(QUERY_UPDATE_COUPON, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
-            getCoupon(id, connection);
-            ps.setString(1, coupon.getType());
-            ps.setString(2, objectMapper.writeValueAsString(coupon.getDetails()));
-            ps.setInt(3, id);
+            CouponDTO dbCoupon = getCoupon(id, connection);
+            ps.setString(1, updatedCoupon.getType());
+            ps.setLong(2, dbCoupon.getCreatedTS());
+            ps.setLong(3, dbCoupon.getExpiryTS());
+            ps.setString(4, objectMapper.writeValueAsString(updatedCoupon.getDetails()));
+            ps.setInt(5, id);
             ps.executeUpdate();
             return getCoupon(id, connection);
         } catch (SQLException | JsonProcessingException e) {
