@@ -21,4 +21,6 @@ public interface CouponService {
     CartOutputDTO applyCoupon(CartInputDTO cartInputDTO, Integer id);
 
     List<CouponSimplifiedDTO> getBestCoupon(CartInputDTO cartInputDTO);
+
+    List<CouponDTO> createBulkCoupons(List<CouponDTO> cdtoList);
 }

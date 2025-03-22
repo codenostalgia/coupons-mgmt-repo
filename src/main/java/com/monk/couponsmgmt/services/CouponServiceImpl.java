@@ -50,6 +50,17 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
+    public List<CouponDTO> createBulkCoupons(List<CouponDTO> cdtoList) {
+        List<CouponDTO> couponsCreated = new ArrayList<>();
+
+        for (CouponDTO cdto : cdtoList) {
+            CouponDTO coupon = couponsDAO.insertCoupon(cdto, connection);
+            couponsCreated.add(coupon);
+        }
+        return couponsCreated;
+    }
+
+    @Override
     public CouponDTO getCoupon(Integer id) {
         return couponsDAO.getCoupon(id, connection);
     }

@@ -238,4 +238,28 @@ public class CouponServiceTest {
         assertEquals(1, coupons.size());
         assertEquals(50, coupons.get(0).getDiscount());
     }
+
+    @Test
+    @Order(9)
+    public void testCreateBulkCoupons() {
+
+        CouponDTO pCoupon = getCoupon("product-wise");
+        CouponDTO cCoupon = getCoupon("cart-wise");
+        CouponDTO bgCoupon = getCoupon("bxgy");
+
+        List<CouponDTO> coupons = new ArrayList<>();
+        coupons.add(pCoupon);
+        coupons.add(cCoupon);
+        coupons.add(bgCoupon);
+
+        Integer initialCount = couponService.getAllCoupons().size();
+
+        List<CouponDTO> couponsCreated = couponService.createBulkCoupons(coupons);
+        assertNotNull(couponsCreated);
+        assertEquals(3, couponsCreated.size());
+
+        Integer finalCount = couponService.getAllCoupons().size();
+
+        assertEquals(3, finalCount - initialCount);
+    }
 }

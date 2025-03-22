@@ -26,6 +26,12 @@ public class CouponController {
         return new ResponseEntity<>(coupon, HttpStatus.CREATED);
     }
 
+    @PostMapping("/coupons/bulk")
+    public ResponseEntity<List<CouponDTO>> createBulkCoupons(@RequestBody List<CouponDTO> cdtoList) {
+        List<CouponDTO> coupons = couponService.createBulkCoupons(cdtoList);
+        return new ResponseEntity<>(coupons, HttpStatus.CREATED);
+    }
+
     @GetMapping("/coupons")
     public ResponseEntity<List<CouponDTO>> getAllCoupons() {
         List<CouponDTO> couponsList = couponService.getAllCoupons();
