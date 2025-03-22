@@ -181,6 +181,9 @@ public class CouponServiceImpl implements CouponService {
         Integer totalDiscount = 0;
         if (totalPrice > details.getThreshold()) {
             totalDiscount = (int) Math.floor((details.getDiscount() * totalPrice) / 100.);
+
+            // Give Discount Only Upto Max X Amount ---> 20% Off UPTO Rs. 100
+            totalDiscount = Math.min(totalDiscount, details.getMaximumDiscount());
             updatedCart.setTotalDiscount(totalDiscount);
         } else {
             updatedCart.setTotalDiscount(totalDiscount);
