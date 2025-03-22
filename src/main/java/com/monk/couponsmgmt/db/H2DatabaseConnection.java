@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class H2DatabaseConnection {
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:h2:mem:testdb", "sa", "password");
+    public static Connection getConnection(String databaseURL, String username, String password) throws SQLException {
+        return DriverManager.getConnection(databaseURL, username, password);
     }
 }

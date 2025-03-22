@@ -10,6 +10,7 @@ import com.monk.couponsmgmt.pojos.BxGyDetails;
 import com.monk.couponsmgmt.pojos.CartWiseDetails;
 import com.monk.couponsmgmt.pojos.Details;
 import com.monk.couponsmgmt.pojos.ProductWiseDetails;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.Duration;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import static com.monk.couponsmgmt.consts.UniversalConstants.*;
 
+@Repository
 public class CouponsDAO {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();

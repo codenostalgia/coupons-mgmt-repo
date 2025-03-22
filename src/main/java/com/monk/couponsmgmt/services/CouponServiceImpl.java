@@ -11,6 +11,9 @@ import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.InvalidCouponTypeE
 import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.NoCouponsFoundException;
 import com.monk.couponsmgmt.pojos.*;
 import com.monk.couponsmgmt.services.inf.CouponService;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -24,12 +27,23 @@ import static com.monk.couponsmgmt.consts.UniversalConstants.*;
 @Service
 public class CouponServiceImpl implements CouponService {
 
+    @Value("${spring.datasource.url}")
+    private String databaseURL;
+
+    @Value("${spring.datasource.username}")
+    private String username;
+
+    @Value("${spring.datasource.password}")
+    private String password;
+
+    @Autowired
     CouponsDAO couponsDAO;
+
     Connection connection;
 
-    public CouponServiceImpl() throws SQLException {
-        this.couponsDAO = new CouponsDAO();
-        this.connection = H2DatabaseConnection.getConnection();
+    @PostConstruct
+    public void init() throws SQLException {
+        this.connection = H2DatabaseConnection.getConnection(databaseURL, username, password);
         couponsDAO.init(connection);
     }
 
