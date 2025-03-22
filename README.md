@@ -21,6 +21,11 @@
 4) Enter Password: `password`
 5) Press `connect`
 
+### POSTMAN Collection for the APIs implemented -
+- Download and import API Collection present in project, to your postman
+- `https://github.com/codenostalgia/coupons-mgmt-repo/blob/main/CouponMgmt.postman_collection.json`
+
+
 
 ## Implemented Cases:
 
@@ -29,19 +34,30 @@
   - Implemented all the 7 APIs, along with the necessary functionality mentioned in the assignment
 
   **`API to Retrieve Best Coupons`**
-  - Implemented One more API `POST /best-coupons` apart from 7 APIs mentioned in the assignment
-  - This API filters out and provides the Coupons which has maximum discount among all the Applicable coupons for the given cart
+  - Implemented API `POST /best-coupons` apart from 7 APIs mentioned in the assignment
+  - This API filters out and provides the Coupons which has `maximum discount` among all the Applicable coupons for the given cart
   - The Payload and Response structure of this API is exactly same as `POST /applicable-coupons` API
   - You can find the API in the Postman Collection present in project root
 
 
-  **`Coupon Types`**
-  - Implemented 3 types of coupons as mentioned in assignment - `CART WISE` `PRODUCT WISE` `BXGY`
+**`API for Bulk Coupon Creation:`**
+- Implemented API `POST /coupons/bulk` apart from 7 APIs mentioned in the assignment
+- The API takes Coupons List payload and response with sames coupons with extra fields populated like id, createdTS, expiryTS, etc
+
+
+**`PayLoad Validation`**
+- The API Payload is validated against the DTOs defined in Backend
+- Invalid payload return `PayLoad Structure is Invalid !!` message
+- Similary ID in path should be integer, or backend returns `ID must be an Integer !!` message
+
+
+**`Coupon Types`**
+- Implemented 3 types of coupons as mentioned in assignment - `CART WISE` `PRODUCT WISE` `BXGY`
     
 
 **`Type Extensibility:`**
-  - The `details` of coupon are stored as a `JSON string` in the H2-database. This will help us accomodate any new type of coupon in future without modifying the database schema and DTOs structure.
-  - The CouponDTO uses a `Details` class, which could implemented by Details of new coupon type in future. This will ensure existing schema and code wont break after adding any new cuopon type
+- The `details` of coupon are stored as a `JSON string` in the H2-database. This will help us accomodate any new type of coupon in future without modifying the database schema and DTOs structure.
+- The CouponDTO uses a `Details` class, which could implemented by Details of new coupon type in future. This will ensure existing schema and code wont break after adding any new cuopon type
 
 
 **`Coupon Expiry:`**
@@ -106,16 +122,6 @@ Implemented Robust Exception Handling to deal with any kind of custom and system
 - Implemented Unit Tests using JUnit for all the functions present in service layer of the application, which effectively ensure entire application is running as desired
 
 
-## Improvements Which Can Be Done in Implemented Cases:
-
-**`expiry_date as User TimeZone:`**
-- The DateTime display string  `expiry_date` provided in coupon response, should be as per the TimeZone of the user
-- Currently its hardcoded to return in `Asia/kolkata` Timezone
-
-**`BxGy Coupon Implementation Improvement:`**
-- The BxGy should be implemented in a way that, the total_discount using that coupon should be maximized
-- Currently it simply picks the `first n` matches of buy and get products, and doesn't have for logic for choosing `best n` matches among all possible matches
-
 ## Unimplemented Cases:
 
 
@@ -141,8 +147,41 @@ Implemented Robust Exception Handling to deal with any kind of custom and system
 - Coupons may have dynamic discounts based on cart value (e.g., 10% off for orders above 100, 20% Off for orders above 200).
 - The system does not handle dynamic discount calculations.
 
-**`Bulk Coupon Creation:`**
-- The system does not support bulk creation of coupons (e.g., creating 1000 coupons at once).
-
 **`Coupon Invalidation:`**
 - The system does not handle cases where a coupon is invalidated after being applied (e.g., due to a change in coupon conditions).
+
+
+## Improvements Which Can Be Done in Implemented Cases:
+
+**`expiry_date as User TimeZone:`**
+- The DateTime display string  `expiry_date` provided in coupon response, should be as per the TimeZone of the user
+- Currently its hardcoded to return in `Asia/kolkata` Timezone
+
+**`BxGy Coupon Implementation Improvement:`**
+- The BxGy should be implemented in a way that, the total_discount using that coupon should be maximized
+- Currently it simply picks the `first n` matches of buy and get products, and doesn't have for logic for choosing `best n` matches among all possible matches
+
+
+## Assumptions/Limitations:
+
+
+**`Coupon Types:`**
+- Only three types of coupons are supported: cart-wise, product-wise, and BxGy.
+- New coupon types can be added in the future without breaking existing functionality.
+
+
+**`Cart Structure:`**
+- The cart is assumed to be a simple list of products with quantities and prices.
+- No support for complex cart structures (e.g., bundles, subscriptions).
+
+
+**`Coupon Conditions:`**
+- Coupon conditions are assumed to be static and predefined in the details itself as provided in assignment
+
+**`Time Zones:`**
+- Expiry Date shown in response is hardcoded in IST
+
+
+**`Database:`**
+- The database is assumed to be always available and consistent.
+- No handling for database failures 
