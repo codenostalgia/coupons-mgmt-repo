@@ -510,6 +510,89 @@
 					"body": "{\n    \"updated_cart\": {\n        \"items\": [\n            {\n                \"quantity\": 6,\n                \"price\": 50,\n                \"product_id\": 1,\n                \"total_discount\": 0\n            },\n            {\n                \"quantity\": 3,\n                \"price\": 30,\n                \"product_id\": 2,\n                \"total_discount\": 0\n            },\n            {\n                \"quantity\": 2,\n                \"price\": 25,\n                \"product_id\": 3,\n                \"total_discount\": 50\n            }\n        ]\n    },\n    \"total_price\": 440,\n    \"total_discount\": 50,\n    \"final_price\": 390\n}"
 				}
 			]
+		},
+		{
+			"name": "BestCoupons",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cart\": {\r\n        \"items\": [\r\n            {\r\n                \"product_id\": 1,\r\n                \"quantity\": 6,\r\n                \"price\": 50\r\n            }, // Product X\r\n            {\r\n                \"product_id\": 2,\r\n                \"quantity\": 3,\r\n                \"price\": 30\r\n            }, // Product Y\r\n            {\r\n                \"product_id\": 3,\r\n                \"quantity\": 2,\r\n                \"price\": 25\r\n            } // Product Z\r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/best-coupons",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"best-coupons"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "BestCoupons",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cart\": {\r\n        \"items\": [\r\n            {\r\n                \"product_id\": 1,\r\n                \"quantity\": 6,\r\n                \"price\": 50\r\n            }, // Product X\r\n            {\r\n                \"product_id\": 2,\r\n                \"quantity\": 3,\r\n                \"price\": 30\r\n            }, // Product Y\r\n            {\r\n                \"product_id\": 3,\r\n                \"quantity\": 2,\r\n                \"price\": 25\r\n            } // Product Z\r\n        ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/best-coupons",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"best-coupons"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 22 Mar 2025 16:21:58 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"coupon_id\": 2,\n        \"type\": \"bxgy\",\n        \"discount\": 50\n    }\n]"
+				}
+			]
 		}
 	]
 }

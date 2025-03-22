@@ -1,7 +1,11 @@
 package com.monk.couponsmgmt.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.monk.couponsmgmt.pojos.*;
+import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler;
+import com.monk.couponsmgmt.pojos.BxGyDetails;
+import com.monk.couponsmgmt.pojos.Cart;
+import com.monk.couponsmgmt.pojos.CartWiseDetails;
+import com.monk.couponsmgmt.pojos.ProductWiseDetails;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -15,7 +19,7 @@ import static com.monk.couponsmgmt.consts.UniversalConstants.*;
 public class ApplicableCouponsDTO {
 
     @JsonProperty("applicable_coupons")
-    List<CouponSimplified> coupons;
+    List<CouponSimplifiedDTO> coupons;
 
     public ApplicableCouponsDTO(CartInputDTO cartInputDTO, List<CouponDTO> coupons) {
         this.coupons = new ArrayList<>();
@@ -38,7 +42,7 @@ public class ApplicableCouponsDTO {
                         if (cart.totalCartValue() > details.getThreshold()) {
                             int discount = (int) ((cart.totalCartValue() * details.getDiscount()) / 100.);
                             if (discount > 0) {
-                                CouponSimplified csDTO = new CouponSimplified(coupon.getId(), entry.getKey(), discount);
+                                CouponSimplifiedDTO csDTO = new CouponSimplifiedDTO(coupon.getId(), entry.getKey(), discount);
                                 this.coupons.add(csDTO);
                             }
                         }
@@ -50,7 +54,7 @@ public class ApplicableCouponsDTO {
                         if (prod2Price.containsKey(details.getProductId())) {
                             int discount = (int) ((prod2Price.get(details.getProductId()) * details.getDiscount()) / 100.);
                             if (discount > 0) {
-                                CouponSimplified csDTO = new CouponSimplified(coupon.getId(), type, discount);
+                                CouponSimplifiedDTO csDTO = new CouponSimplifiedDTO(coupon.getId(), type, discount);
                                 this.coupons.add(csDTO);
                             }
                         }
@@ -98,12 +102,16 @@ public class ApplicableCouponsDTO {
                             repititionLimit--;
                         }
                         if (totalDiscount > 0) {
-                            CouponSimplified csDTO = new CouponSimplified(coupon.getId(), type, totalDiscount);
+                            CouponSimplifiedDTO csDTO = new CouponSimplifiedDTO(coupon.getId(), type, totalDiscount);
                             this.coupons.add(csDTO);
                         }
                     }
                 }
             }
+        }
+
+        if (this.coupons.size() == 0) {
+            throw new GlobalExceptionHandler.NoApplicableCouponsFoundException();
         }
     }
 }

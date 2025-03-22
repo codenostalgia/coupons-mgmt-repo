@@ -1,9 +1,6 @@
 package com.monk.couponsmgmt;
 
-import com.monk.couponsmgmt.dto.ApplicableCouponsDTO;
-import com.monk.couponsmgmt.dto.CartInputDTO;
-import com.monk.couponsmgmt.dto.CartOutputDTO;
-import com.monk.couponsmgmt.dto.CouponDTO;
+import com.monk.couponsmgmt.dto.*;
 import com.monk.couponsmgmt.pojos.*;
 import com.monk.couponsmgmt.services.CouponServiceImpl;
 import org.junit.jupiter.api.*;
@@ -227,5 +224,18 @@ public class CouponServiceTest {
 
         assertNotNull(cartUpdated);
         assertEquals(396, cartUpdated.getFinalPrice());
+    }
+
+    @Test
+    @Order(8)
+    public void testBestCoupons() {
+        CartInputDTO cart = getCart();
+        List<CouponSimplifiedDTO> coupons = couponService.getBestCoupon(cart);
+
+        System.out.println(coupons);
+
+        assertNotNull(coupons);
+        assertEquals(1, coupons.size());
+        assertEquals(50, coupons.get(0).getDiscount());
     }
 }

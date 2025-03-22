@@ -48,6 +48,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(NoApplicableCouponsFoundException.class)
+    public ResponseEntity<Object> handleNoApplicableCouponsFoundException(NoApplicableCouponsFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("NOT_FOUND", "No Applicable Coupons Found !!");
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(InvalidCouponTypeException.class)
     public ResponseEntity<Object> handleInvalidTypeException(InvalidCouponTypeException ex) {
         ErrorResponse errorResponse = new ErrorResponse("NOT_ACCEPTABLE", ex.getMessage());
@@ -103,5 +109,10 @@ public class GlobalExceptionHandler {
         }
     }
 
+    public static class NoApplicableCouponsFoundException extends RuntimeException {
+        public NoApplicableCouponsFoundException() {
+            super();
+        }
+    }
 }
 

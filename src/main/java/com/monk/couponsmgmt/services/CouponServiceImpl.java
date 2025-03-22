@@ -2,10 +2,7 @@ package com.monk.couponsmgmt.services;
 
 import com.monk.couponsmgmt.db.CouponsDAO;
 import com.monk.couponsmgmt.db.H2DatabaseConnection;
-import com.monk.couponsmgmt.dto.ApplicableCouponsDTO;
-import com.monk.couponsmgmt.dto.CartInputDTO;
-import com.monk.couponsmgmt.dto.CartOutputDTO;
-import com.monk.couponsmgmt.dto.CouponDTO;
+import com.monk.couponsmgmt.dto.*;
 import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.CouponExpiredException;
 import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.InvalidCouponTypeException;
 import com.monk.couponsmgmt.exceptions.GlobalExceptionHandler.NoCouponsFoundException;
@@ -216,6 +213,28 @@ public class CouponServiceImpl implements CouponService {
         updatedCart.setTotalPrice(totalPrice);
 
         return updatedCart;
+    }
+
+    @Override
+    public List<CouponSimplifiedDTO> getBestCoupon(CartInputDTO cartInputDTO) {
+
+        List<CouponDTO> dbCoupons = couponsDAO.getAllCoupons(connection);
+        ApplicableCouponsDTO coupons = new ApplicableCouponsDTO(cartInputDTO, dbCoupons);
+
+        List<CouponSimplifiedDTO> bestCoupons = new ArrayList<>();
+        for (CouponSimplifiedDTO coupon : coupons.getCoupons()) {
+            if (bestCoupons.size() == 0) bestCoupons.add(coupon);
+            else {
+                if (coupon.getDiscount() == bestCoupons.get(0).getDiscount()) {
+                    bestCoupons.add(coupon);
+                } else if (coupon.getDiscount() > bestCoupons.get(0).getDiscount()) {
+                    bestCoupons.clear();
+                    bestCoupons.add(coupon);
+                }
+            }
+        }
+
+        return bestCoupons;
     }
 }
 

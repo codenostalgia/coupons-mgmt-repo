@@ -1,9 +1,6 @@
 package com.monk.couponsmgmt.controllers;
 
-import com.monk.couponsmgmt.dto.ApplicableCouponsDTO;
-import com.monk.couponsmgmt.dto.CartInputDTO;
-import com.monk.couponsmgmt.dto.CartOutputDTO;
-import com.monk.couponsmgmt.dto.CouponDTO;
+import com.monk.couponsmgmt.dto.*;
 import com.monk.couponsmgmt.services.inf.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,5 +60,11 @@ public class CouponController {
     public ResponseEntity<CartOutputDTO> applyCoupon(@PathVariable Integer id, @RequestBody CartInputDTO cartInputDTO) {
         CartOutputDTO updatedCart = couponService.applyCoupon(cartInputDTO, id);
         return new ResponseEntity<>(updatedCart, HttpStatus.OK);
+    }
+
+    @PostMapping("/best-coupons")
+    public ResponseEntity<List<CouponSimplifiedDTO>> findBestCoupon(@RequestBody CartInputDTO cartInputDTO) {
+        List<CouponSimplifiedDTO> bestCoupons = couponService.getBestCoupon(cartInputDTO);
+        return new ResponseEntity<>(bestCoupons, HttpStatus.OK);
     }
 }

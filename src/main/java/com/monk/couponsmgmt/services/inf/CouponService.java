@@ -1,9 +1,6 @@
 package com.monk.couponsmgmt.services.inf;
 
-import com.monk.couponsmgmt.dto.ApplicableCouponsDTO;
-import com.monk.couponsmgmt.dto.CartInputDTO;
-import com.monk.couponsmgmt.dto.CartOutputDTO;
-import com.monk.couponsmgmt.dto.CouponDTO;
+import com.monk.couponsmgmt.dto.*;
 
 import java.util.List;
 
@@ -22,4 +19,6 @@ public interface CouponService {
     ApplicableCouponsDTO findApplicableCoupons(CartInputDTO cartInputDTO);
 
     CartOutputDTO applyCoupon(CartInputDTO cartInputDTO, Integer id);
+
+    List<CouponSimplifiedDTO> getBestCoupon(CartInputDTO cartInputDTO);
 }
