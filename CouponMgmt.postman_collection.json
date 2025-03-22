@@ -30,7 +30,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "// Cart-wise\r\n{\r\n    \"type\": \"cart-wise\",\r\n    \"expires_in_days\": 7, // By Default Expiry Days is 30\r\n    \"details\": {\r\n        \"threshold\": 100,\r\n        \"discount\": 10,\r\n        \"maximum_discount\": 25\r\n    }\r\n}\r\n// Product -wise\r\n// {\r\n//     \"type\": \"product-wise\",\r\n//     \"expires_in_days\": 7, // By Default Expiry Days is 30\r\n//     \"details\": {\r\n//         \"product_id\": 1,\r\n//         \"discount\": 20\r\n//     }\r\n// }\r\n// BxGy\r\n// {\r\n//     \"type\": \"bxgy\",\r\n//     \"expires_in_days\": 7, // By Default Expiry Days is 30\r\n//     \"details\": {\r\n//         \"buy_products\": [\r\n//             {\r\n//                 \"product_id\": 1,\r\n//                 \"quantity\": 3\r\n//             },\r\n//             {\r\n//                 \"product_id\": 2,\r\n//                 \"quantity\": 3\r\n//             }\r\n//         ],\r\n//         \"get_products\": [\r\n//             {\r\n//                 \"product_id\": 3,\r\n//                 \"quantity\": 1\r\n//             }\r\n//         ],\r\n//         \"repetition_limit\": 2\r\n//     }\r\n// }",
+					"raw": "// Cart-wise\r\n{\r\n    \"type\": \"cart-wise\",\r\n    \"expires_in_days\": 7, // By Default Expiry Days are 30\r\n    \"details\": {\r\n        \"threshold\": 100,\r\n        \"discount\": 10,\r\n        \"maximum_discount\": 25\r\n    }\r\n}\r\n// Product -wise\r\n// {\r\n//     \"type\": \"product-wise\",\r\n//     \"expires_in_days\": 7, // By Default Expiry Days is 30\r\n//     \"details\": {\r\n//         \"product_id\": 1,\r\n//         \"discount\": 20\r\n//     }\r\n// }\r\n// BxGy\r\n// {\r\n//     \"type\": \"bxgy\",\r\n//     \"expires_in_days\": 7, // By Default Expiry Days is 30\r\n//     \"details\": {\r\n//         \"buy_products\": [\r\n//             {\r\n//                 \"product_id\": 1,\r\n//                 \"quantity\": 3\r\n//             },\r\n//             {\r\n//                 \"product_id\": 2,\r\n//                 \"quantity\": 3\r\n//             }\r\n//         ],\r\n//         \"get_products\": [\r\n//             {\r\n//                 \"product_id\": 3,\r\n//                 \"quantity\": 1\r\n//             }\r\n//         ],\r\n//         \"repetition_limit\": 2\r\n//     }\r\n// }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "// Cart-wise\r\n{\r\n    \"type\": \"cart-wise\",\r\n    \"expires_in_days\": 7, // By Default Expiry Days is 30\r\n    \"details\": {\r\n        \"threshold\": 100,\r\n        \"discount\": 10,\r\n        \"maximum_discount\": 25\r\n    }\r\n}\r\n// Product -wise\r\n// {\r\n//     \"type\": \"product-wise\",\r\n//     \"expires_in_days\": 7, // By Default Expiry Days is 30\r\n//     \"details\": {\r\n//         \"product_id\": 1,\r\n//         \"discount\": 20\r\n//     }\r\n// }\r\n// BxGy\r\n// {\r\n//     \"type\": \"bxgy\",\r\n//     \"expires_in_days\": 7, // By Default Expiry Days is 30\r\n//     \"details\": {\r\n//         \"buy_products\": [\r\n//             {\r\n//                 \"product_id\": 1,\r\n//                 \"quantity\": 3\r\n//             },\r\n//             {\r\n//                 \"product_id\": 2,\r\n//                 \"quantity\": 3\r\n//             }\r\n//         ],\r\n//         \"get_products\": [\r\n//             {\r\n//                 \"product_id\": 3,\r\n//                 \"quantity\": 1\r\n//             }\r\n//         ],\r\n//         \"repetition_limit\": 2\r\n//     }\r\n// }",
+							"raw": "// Cart-wise\r\n{\r\n    \"type\": \"cart-wise\",\r\n    \"expires_in_days\": 7, // By Default Expiry Days are 30\r\n    \"details\": {\r\n        \"threshold\": 100,\r\n        \"discount\": 10,\r\n        \"maximum_discount\": 25\r\n    }\r\n}\r\n// Product -wise\r\n// {\r\n//     \"type\": \"product-wise\",\r\n//     \"expires_in_days\": 7, // By Default Expiry Days is 30\r\n//     \"details\": {\r\n//         \"product_id\": 1,\r\n//         \"discount\": 20\r\n//     }\r\n// }\r\n// BxGy\r\n// {\r\n//     \"type\": \"bxgy\",\r\n//     \"expires_in_days\": 7, // By Default Expiry Days is 30\r\n//     \"details\": {\r\n//         \"buy_products\": [\r\n//             {\r\n//                 \"product_id\": 1,\r\n//                 \"quantity\": 3\r\n//             },\r\n//             {\r\n//                 \"product_id\": 2,\r\n//                 \"quantity\": 3\r\n//             }\r\n//         ],\r\n//         \"get_products\": [\r\n//             {\r\n//                 \"product_id\": 3,\r\n//                 \"quantity\": 1\r\n//             }\r\n//         ],\r\n//         \"repetition_limit\": 2\r\n//     }\r\n// }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -90,7 +90,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Sat, 22 Mar 2025 11:55:15 GMT"
+							"value": "Sat, 22 Mar 2025 15:36:27 GMT"
 						},
 						{
 							"key": "Keep-Alive",
@@ -102,7 +102,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"id\": 6,\n    \"type\": \"cart-wise\",\n    \"createdTS\": 1742644515189,\n    \"expiryTS\": 1743249315189,\n    \"is_expired\": false,\n    \"details\": {\n        \"threshold\": 100,\n        \"discount\": 10,\n        \"maximum_discount\": 25\n    }\n}"
+					"body": "{\n    \"id\": 1,\n    \"type\": \"cart-wise\",\n    \"createdTS\": 1742657787144,\n    \"expiryTS\": 1743262587144,\n    \"is_expired\": false,\n    \"expiry_date\": \"2025-03-29 21:06:27\",\n    \"details\": {\n        \"threshold\": 100,\n        \"discount\": 10,\n        \"maximum_discount\": 25\n    }\n}"
 				}
 			]
 		},
@@ -157,7 +157,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Fri, 21 Mar 2025 23:53:06 GMT"
+							"value": "Sat, 22 Mar 2025 15:37:17 GMT"
 						},
 						{
 							"key": "Keep-Alive",
@@ -169,7 +169,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"id\": 1,\n    \"type\": \"bxgy\",\n    \"createdTS\": 1742601158320,\n    \"expiryTS\": 1743205958320,\n    \"is_expired\": false,\n    \"details\": {\n        \"buy_products\": [\n            {\n                \"quantity\": 3,\n                \"product_id\": 1\n            },\n            {\n                \"quantity\": 3,\n                \"product_id\": 2\n            }\n        ],\n        \"get_products\": [\n            {\n                \"quantity\": 1,\n                \"product_id\": 3\n            }\n        ],\n        \"repetition_limit\": 2\n    }\n}"
+					"body": "{\n    \"id\": 1,\n    \"type\": \"cart-wise\",\n    \"createdTS\": 1742657787144,\n    \"expiryTS\": 1743262587144,\n    \"is_expired\": false,\n    \"expiry_date\": \"2025-03-29 21:06:27\",\n    \"details\": {\n        \"threshold\": 100,\n        \"discount\": 10,\n        \"maximum_discount\": 25\n    }\n}"
 				}
 			]
 		},
@@ -222,7 +222,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Sat, 22 Mar 2025 11:56:07 GMT"
+							"value": "Sat, 22 Mar 2025 15:37:43 GMT"
 						},
 						{
 							"key": "Keep-Alive",
@@ -234,7 +234,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "[\n    {\n        \"id\": 1,\n        \"type\": \"cart-wise\",\n        \"createdTS\": 1742644408352,\n        \"expiryTS\": 1743249208352,\n        \"is_expired\": false,\n        \"details\": {\n            \"threshold\": 100,\n            \"discount\": 10,\n            \"maximum_discount\": 25\n        }\n    },\n    {\n        \"id\": 2,\n        \"type\": \"cart-wise\",\n        \"createdTS\": 1742644419628,\n        \"expiryTS\": 1742644419628,\n        \"is_expired\": true,\n        \"details\": {\n            \"threshold\": 100,\n            \"discount\": 10,\n            \"maximum_discount\": 25\n        }\n    },\n    {\n        \"id\": 3,\n        \"type\": \"cart-wise\",\n        \"createdTS\": 1742644463757,\n        \"expiryTS\": 1743249263757,\n        \"is_expired\": false,\n        \"details\": {\n            \"threshold\": 100,\n            \"discount\": 10,\n            \"maximum_discount\": 25\n        }\n    },\n    {\n        \"id\": 4,\n        \"type\": \"product-wise\",\n        \"createdTS\": 1742644482918,\n        \"expiryTS\": 1743249282918,\n        \"is_expired\": false,\n        \"details\": {\n            \"discount\": 20,\n            \"product_id\": 1\n        }\n    },\n    {\n        \"id\": 5,\n        \"type\": \"bxgy\",\n        \"createdTS\": 1742644494747,\n        \"expiryTS\": 1743249294747,\n        \"is_expired\": false,\n        \"details\": {\n            \"buy_products\": [\n                {\n                    \"quantity\": 3,\n                    \"product_id\": 1\n                },\n                {\n                    \"quantity\": 3,\n                    \"product_id\": 2\n                }\n            ],\n            \"get_products\": [\n                {\n                    \"quantity\": 1,\n                    \"product_id\": 3\n                }\n            ],\n            \"repetition_limit\": 2\n        }\n    },\n    {\n        \"id\": 6,\n        \"type\": \"cart-wise\",\n        \"createdTS\": 1742644515189,\n        \"expiryTS\": 1743249315189,\n        \"is_expired\": false,\n        \"details\": {\n            \"threshold\": 100,\n            \"discount\": 10,\n            \"maximum_discount\": 25\n        }\n    }\n]"
+					"body": "[\n    {\n        \"id\": 1,\n        \"type\": \"cart-wise\",\n        \"createdTS\": 1742657787144,\n        \"expiryTS\": 1743262587144,\n        \"is_expired\": false,\n        \"expiry_date\": \"2025-03-29 21:06:27\",\n        \"details\": {\n            \"threshold\": 100,\n            \"discount\": 10,\n            \"maximum_discount\": 25\n        }\n    }\n]"
 				}
 			]
 		},
@@ -245,7 +245,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"type\": \"bxgy\",\r\n    \"details\": {\r\n        \"buy_products\": [\r\n            {\r\n                \"product_id\": 1,\r\n                \"quantity\": 2\r\n            },\r\n            {\r\n                \"product_id\": 2,\r\n                \"quantity\": 2\r\n            }\r\n        ],\r\n        \"get_products\": [\r\n            {\r\n                \"product_id\": 3,\r\n                \"quantity\": 1\r\n            }\r\n        ],\r\n        \"repetition_limit\": 3\r\n    }\r\n}",
+					"raw": "{\r\n    \"type\": \"bxgy\",\r\n    \"details\": {\r\n        \"buy_products\": [\r\n            {\r\n                \"product_id\": 1,\r\n                \"quantity\": 2\r\n            },\r\n            {\r\n                \"product_id\": 2,\r\n                \"quantity\": 2\r\n            }\r\n        ],\r\n        \"get_products\": [\r\n            {\r\n                \"product_id\": 3,\r\n                \"quantity\": 1\r\n            }\r\n        ],\r\n        \"repetition_limit\": 2\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -273,7 +273,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"type\": \"bxgy\",\r\n    \"details\": {\r\n        \"buy_products\": [\r\n            {\r\n                \"product_id\": 1,\r\n                \"quantity\": 2\r\n            },\r\n            {\r\n                \"product_id\": 2,\r\n                \"quantity\": 2\r\n            }\r\n        ],\r\n        \"get_products\": [\r\n            {\r\n                \"product_id\": 3,\r\n                \"quantity\": 1\r\n            }\r\n        ],\r\n        \"repetition_limit\": 3\r\n    }\r\n}",
+							"raw": "{\r\n    \"type\": \"bxgy\",\r\n    \"details\": {\r\n        \"buy_products\": [\r\n            {\r\n                \"product_id\": 1,\r\n                \"quantity\": 2\r\n            },\r\n            {\r\n                \"product_id\": 2,\r\n                \"quantity\": 2\r\n            }\r\n        ],\r\n        \"get_products\": [\r\n            {\r\n                \"product_id\": 3,\r\n                \"quantity\": 1\r\n            }\r\n        ],\r\n        \"repetition_limit\": 2\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -307,7 +307,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Fri, 21 Mar 2025 23:54:07 GMT"
+							"value": "Sat, 22 Mar 2025 15:38:02 GMT"
 						},
 						{
 							"key": "Keep-Alive",
@@ -319,7 +319,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"id\": 1,\n    \"type\": \"bxgy\",\n    \"createdTS\": 1742601158320,\n    \"expiryTS\": 1743205958320,\n    \"is_expired\": false,\n    \"details\": {\n        \"buy_products\": [\n            {\n                \"quantity\": 2,\n                \"product_id\": 1\n            },\n            {\n                \"quantity\": 2,\n                \"product_id\": 2\n            }\n        ],\n        \"get_products\": [\n            {\n                \"quantity\": 1,\n                \"product_id\": 3\n            }\n        ],\n        \"repetition_limit\": 3\n    }\n}"
+					"body": "{\n    \"id\": 1,\n    \"type\": \"bxgy\",\n    \"createdTS\": 1742657787144,\n    \"expiryTS\": 1743262587144,\n    \"is_expired\": false,\n    \"expiry_date\": \"2025-03-29 21:06:27\",\n    \"details\": {\n        \"buy_products\": [\n            {\n                \"quantity\": 2,\n                \"product_id\": 1\n            },\n            {\n                \"quantity\": 2,\n                \"product_id\": 2\n            }\n        ],\n        \"get_products\": [\n            {\n                \"quantity\": 1,\n                \"product_id\": 3\n            }\n        ],\n        \"repetition_limit\": 2\n    }\n}"
 				}
 			]
 		},
@@ -410,7 +410,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Fri, 21 Mar 2025 23:54:55 GMT"
+							"value": "Sat, 22 Mar 2025 15:38:41 GMT"
 						},
 						{
 							"key": "Keep-Alive",
@@ -495,7 +495,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Sat, 22 Mar 2025 00:08:33 GMT"
+							"value": "Sat, 22 Mar 2025 15:38:49 GMT"
 						},
 						{
 							"key": "Keep-Alive",

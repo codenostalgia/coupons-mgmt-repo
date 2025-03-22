@@ -8,12 +8,16 @@ import com.monk.couponsmgmt.pojos.ProductWiseDetails;
 import lombok.Data;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 import static com.monk.couponsmgmt.consts.UniversalConstants.*;
 
 @Data
-@JsonPropertyOrder({"id", "type", "createdTS", "expiryTS", "is_expired", "details"})
+@JsonPropertyOrder({"id", "type", "createdTS", "expiryTS", "is_expired", "expiry_date", "details"})
 public class CouponDTO {
     Integer id;
     String type;
@@ -29,6 +33,15 @@ public class CouponDTO {
     public Boolean getIsExpired() {
         long currentTS = System.currentTimeMillis();
         return currentTS >= getExpiryTS();
+    }
+
+    @JsonProperty("expiry_date")
+    public String getExpiryDateTime() {
+        Instant instant = Instant.ofEpochMilli(getExpiryTS());
+        ZonedDateTime istTime = instant.atZone(ZoneId.of("Asia/Kolkata"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String readableDateTime = istTime.format(formatter);
+        return readableDateTime;
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = FIELD_TYPE)
