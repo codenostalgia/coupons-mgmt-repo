@@ -77,6 +77,46 @@ public class CouponsDAO {
         return coupon;
     }
 
+    public List<CouponDTO> insertCoupons(List<CouponDTO> coupons, Connection connection) {
+        List<CouponDTO> insertedCoupons = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_INSERT_COUPON, Statement.RETURN_GENERATED_KEYS)) {
+            for (CouponDTO coupon : coupons) {
+                ps.setString(1, coupon.getType());
+                ps.setLong(2, coupon.getCreatedTS());
+                ps.setLong(3, coupon.getExpiryTS());
+                ps.setString(4, objectMapper.writeValueAsString(coupon.getDetails()));
+                ps.addBatch();
+            }
+
+            int[] affectedRows = ps.executeBatch();
+
+            // Check if all rows were affected
+            for (int i = 0; i < affectedRows.length; i++) {
+                if (affectedRows[i] == 0) {
+                    throw new CouponStructureInvalidException("Coupon Structure is Invalid for coupon at index: " + i);
+                }
+            }
+
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                int index = 0;
+                while (generatedKeys.next()) {
+                    int id = generatedKeys.getInt(1);
+                    CouponDTO coupon = coupons.get(index);
+                    coupon.setId(id);
+                    insertedCoupons.add(coupon);
+                    index++;
+                }
+            }
+        } catch (JsonProcessingException e) {
+            throw new CouponStructureInvalidException("Coupon Structure is Invalid !");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return insertedCoupons;
+    }
+
     public List<CouponDTO> getAllCoupons(Connection connection) {
         try (Statement stmt = connection.createStatement()) {
             ResultSet rs = stmt.executeQuery(QUERY_SELECT_ALL_COUPON);
