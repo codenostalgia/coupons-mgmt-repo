@@ -1,6 +1,3 @@
-# This repository contains code for the assignment `Coupons Management API` given by Monk Commerce Company, as a part of their hiring process
-
-
 ### Tech Stack Used:
 - SpringBoot (Java)
 - H2- In Memory Database
