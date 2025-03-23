@@ -22,7 +22,7 @@
 5) Press `connect`
 
 ### POSTMAN Collection for the APIs implemented -
-- Download and import API Collection present in project, to your postman
+- Download and import API Collection present in project root folder, to your postman
 - `https://github.com/codenostalgia/coupons-mgmt-repo/blob/main/CouponMgmt.postman_collection.json`
 
 
